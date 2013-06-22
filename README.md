@@ -1,11 +1,11 @@
 visibility
 ==========
-
+ 
 
 ##Background
 Software builds should be repeatable and transparent.  Often [Continuous Delivery](http://en.wikipedia.org/wiki/Continuous_delivery) workflows are 
 built on top of tools such as Jenkins, which are great at task management, but less so at providing an overall view of workflows.  CI jobs may be
-are cleared away after a time, leaving the user clueless as to what version of code build what version of product.
+cleared away after a time, leaving the user clueless as to what version of code build what version of product.
 
  
 ##So, What is Visibility?
