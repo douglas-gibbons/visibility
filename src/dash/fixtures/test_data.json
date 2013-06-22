@@ -1,0 +1,111 @@
+[
+  
+{
+  "pk": "Test Product 1", 
+  "model": "dash.product", 
+  "fields": {}
+},
+{
+  "pk": "Test Product 2", 
+  "model": "dash.product", 
+  "fields": {}
+},
+{
+  "pk": "Test Product 3", 
+  "model": "dash.product", 
+  "fields": {}
+},
+{
+  "pk": "Dev", 
+  "model": "dash.environment", 
+  "fields": {}
+},
+{
+  "pk": "QA", 
+  "model": "dash.environment", 
+  "fields": {}
+},
+{
+  "pk": "Testpack 1", 
+  "model": "dash.testpack", 
+  "fields": {}
+},
+{
+  "pk": 1, 
+  "model": "dash.event", 
+  "fields": {
+    "start": "2013-05-08T13:00:06Z", 
+    "product": "Test Product 1", 
+    "version": "1.2.3-123", 
+    "end": "2013-05-08T13:10:09Z", 
+    "success": true
+  }
+},
+{
+  "pk": 2, 
+  "model": "dash.event", 
+  "fields": {
+    "start": "2013-05-08T13:11:41Z", 
+    "product": "Test Product 1", 
+    "version": "1.2.3-123", 
+    "end": "2013-05-08T13:15:43Z", 
+    "success": true
+  }
+},
+{
+  "pk": 3, 
+  "model": "dash.event", 
+  "fields": {
+    "start": "2013-05-08T13:16:53Z", 
+    "product": "Test Product 1", 
+    "version": "1.2.3-123", 
+    "end": "2013-05-08T13:20:55Z", 
+    "success": true
+  }
+},
+{
+  "pk": 4, 
+  "model": "dash.event", 
+  "fields": {
+    "start": "2013-05-08T13:21:32Z", 
+    "product": "Test Product 1", 
+    "version": "1.2.3-123", 
+    "end": "2013-05-08T13:34:34Z", 
+    "success": true
+  }
+},
+{
+  "pk": 1, 
+  "model": "dash.build", 
+  "fields": {
+    "builder": "/test", 
+    "vcs_location": "/test/", 
+    "revision": 12345
+  }
+},
+{
+  "pk": 2, 
+  "model": "dash.deploy", 
+  "fields": {
+    "environment": "Dev"
+  }
+},
+{
+  "pk": 3, 
+  "model": "dash.testrun", 
+  "fields": {
+    "environment": "Dev", 
+    "test_location": "/test/", 
+    "testpack": "Testpack 1"
+  }
+},
+
+{
+  "pk": 4, 
+  "model": "dash.deploy", 
+  "fields": {
+    "environment": "QA"
+  }
+}
+
+]

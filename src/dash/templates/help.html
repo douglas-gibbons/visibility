@@ -1,0 +1,357 @@
+{% extends "base.html" %} {% load staticfiles %} {% block title %}
+<title>Visibilty: Help Documentation</title>
+{% endblock title %} {% block extra_javascript %}
+
+<script src="{% static 'js/bootstrap-application.js' %}"></script>
+<script src="{% static 'js/bootstrap-affix.js' %}"></script>
+<script>
+	</script>
+{% endblock extra_javascript %} {% block extra_style %}
+<link href="{% static 'css/bootstrap-docs.css' %}" rel="stylesheet" />
+<style>
+</style>
+{% endblock extra_style %} {% block main %}
+
+
+
+
+<div class="row">
+	<div class="span3 bs-docs-sidebar">
+		<ul class="nav nav-list bs-docs-sidenav">
+			<li><a href="#running"><i class="icon-chevron-right"></i>
+					Running the Application</a></li>
+			<li><a href="#data"><i class="icon-chevron-right"></i> The
+					Database</a></li>
+			<li><a href="#api"><i class="icon-chevron-right"></i> The
+					API</a></li>
+			<li><a href="#webinterface"><i class="icon-chevron-right"></i>
+					The Web Interface</a></li>
+			<li><a href="#testingapp"><i class="icon-chevron-right"></i>
+					Testing the Application</a></li>
+		</ul>
+	</div>
+
+
+	<div class="span9">
+
+
+		<section id="running">
+			<div class="page-header">
+				<h1>Running the Application</h1>
+			</div>
+
+			<p>The Visibility dashboard is designed to provide a web
+				interface for continuous delivery workflows.</p>
+			<p>It is set out as a standard Django project, and so the best
+				help for setting up the application is to look at the Django
+				website.</p>
+		</section>
+		<section id="data">
+			<div class="page-header">
+				<h1>The Database</h1>
+			</div>
+
+			<h4>Data Format and Storage</h4>
+			<p>
+				The backend is configured in the standard way for a Django
+				application. Out of the box, the application is configured to use an
+				sqlite database backend, but you might want to change this. The <a
+					href='https://docs.djangoproject.com/en/dev/ref/settings/#databases'>Django
+					documentation</a> explains how.
+			</p>
+
+			<h4>Database Tables</h4>
+			<p>The database has the following tables.
+			<table class="table .table-condensed">
+				<tr>
+					<th>Table Name</th>
+					<th>Description</th>
+				</tr>
+				<tr>
+					<td>Product</td>
+					<td>List of products or applications that you wish to monitor.</td>
+				</tr>
+				<tr>
+					<td>Environment</td>
+					<td>List of environments to deploy to.</td>
+				</tr>
+				<tr>
+					<td>Testpack</td>
+					<td>List of testpacks that can be used in test runs.</td>
+				</tr>
+				<tr>
+					<td>Event</td>
+					<td>The generic information relating to a build, test run or a
+						deployment, such as start time, end time, a link to the product
+						and a field for product version.</td>
+				</tr>
+				<tr>
+					<td>Build</td>
+					<td>Details of a build event specific to the build, such as
+						VCS revision number. Each build links to a specific event.</td>
+				</tr>
+				<tr>
+					<td>Testrun</td>
+					<td>Details of a test run, including the test pack, and the
+						environment. Eacn test run links to a specific event. The event
+						success field is used to describe if the tests were successful.</td>
+				</tr>
+				<tr>
+					<td>Deploy</td>
+					<td>Details of a deployment to an environment. Each deployment
+						is linked to a specific event.</td>
+				</tr>
+			</table>
+
+			The Product, Environment and Testpack tables are simple single column
+			tables to help classify the data. There is no need to specifically
+			add new values to these, as they will automatically be added to as
+			necessary (see API section below).
+
+			</p>
+
+		</section>
+		<section id="api">
+			<div class="page-header">
+				<h1>The API</h1>
+			</div>
+			<p>Each time a build, a test run or a deployment starts or ends,
+				data can be added to the API to track these events. The API is HTTP
+				based. The addition of data returns an ID to the record that has
+				been added or updated. This allows you to create a record when an
+				event such as a build starts, and when it ends, use the same ID to
+				record the end of that event. The examples below show how to use the
+				API to record Builds, Deployments and Test Runs.</p>
+
+			<h5>Builds</h5>
+
+			<p>
+				Path to add a new build: /dash/new_build<br /> Path to update a
+				build: /dash/update_build<br /> Both requests return the build
+				record ID number.<br />
+			<table>
+				<caption>Build Fields</caption>
+				<tr>
+					<th>Name</th>
+					<th>Description</th>
+				</tr>
+				<tr>
+					<td>Build.id</td>
+					<td>ID number of the build record</td>
+				</tr>
+				<tr>
+					<td>Build.start</td>
+					<td>Start time of the event</td>
+				</tr>
+				<tr>
+					<td>Build.end</td>
+					<td>End time of the event</td>
+				</tr>
+				<tr>
+					<td>Build.version</td>
+					<td>Version of the application</td>
+				</tr>
+				<tr>
+					<td>Build.success</td>
+					<td>Success or failure. Set to 1 for success, blank for
+						failure and do not set for unknown</td>
+				</tr>
+				<tr>
+					<td>Product.name</td>
+					<td>Name of the product.</td>
+				</tr>
+
+				<tr>
+					<td>Build.vcs_location</td>
+					<td>Location of the source code. This is a text field and
+						could, for example, store a URL to the code location</td>
+				</tr>
+				<tr>
+					<td>Build.revision</td>
+					<td>Source control revision number</td>
+				</tr>
+				<tr>
+					<td>Build.builder</td>
+					<td>Descrption of what built the code. This could, for
+						example, contain a URL to the Jenkins build.</td>
+				</tr>
+
+			</table>
+			</p>
+			<h6>Examples</h6>
+			<p>Posting of data for the start of a build. Note the use of the
+				'now' keyword to specify a start date and time. Alternatively a date
+				and time can be added in the format of &quot;YYYY-MM-DD
+				HH:MM:SS&quot;.
+			<pre>
+build_id=$( \
+ curl -d "Product.name=Test Product&Build.version=1.0&Build.revision=12345&Build.start=now" \
+ "http://localhost:8000/dash/new_build")
+					</pre>
+
+			</p>
+
+			<p>Posting of data for the successful completion of a build
+				(using the build_id variable which we created above):
+			<pre>
+curl -d "Build.id="$build_id"&Build.end=now&Build.success=1" \
+ "http://localhost:8000/dash/update_build"
+					</pre>
+			</p>
+			<p>Posting of data for a build failure. We just set success to
+				blank:
+			<pre>
+curl -d "Build.id="$build_id"&Build.end=now&Build.success=" \
+ "http://localhost:8000/dash/update_build"
+					</pre>
+			</p>
+
+			<h5>Test Runs</h5>
+
+			<p>
+				Path to add a new test run: /dash/new_testrun<br /> Path to update
+				a test run: /dash/update_testrun<br /> Both requests return the
+				test run record ID number.<br />
+			<table>
+				<caption>Testrun Fields</caption>
+				<tr>
+					<th>Name</th>
+					<th>Description</th>
+				</tr>
+				<tr>
+					<td>Testrun.id</td>
+					<td>ID number of the Testrun record</td>
+				</tr>
+				<tr>
+					<td>Testrun.start</td>
+					<td>Start time of the event</td>
+				</tr>
+				<tr>
+					<td>Testrun.end</td>
+					<td>End time of the event</td>
+				</tr>
+				<tr>
+					<td>Testrun.version</td>
+					<td>Version of the application</td>
+				</tr>
+				<tr>
+					<td>Testrun.success</td>
+					<td>Success or failure. Set to 1 for success, blank for
+						failure and do not set for unknown</td>
+				</tr>
+
+				<tr>
+					<td>Testrun.location</td>
+					<td>This can be a text description of the testing systme or a
+						URL to the test, such as a Jenkins URL to the test job.</td>
+				</tr>
+
+				<tr>
+					<td>Product.name</td>
+					<td>Name of the product.</td>
+				</tr>
+				<tr>
+					<td>Testpack.name</td>
+					<td>Name of the test pack that is running or has been run</td>
+				</tr>
+				<tr>
+					<td>Environment.name</td>
+					<td>Name of the environment in which the tests are running or
+						have been run</td>
+				</tr>
+
+			</table>
+			</p>
+
+			<h5>Deployments</h5>
+
+			<p>
+				Path to add a new deployment: /dash/new_deployment<br /> Path to
+				update a deployment: /dash/update_depoyment<br /> Both requests
+				return the deployment record ID number.<br />
+			<table>
+				<caption>Deploy Fields</caption>
+				<tr>
+					<th>Name</th>
+					<th>Description</th>
+				</tr>
+				<tr>
+					<td>Deploy.id</td>
+					<td>ID number of the Deploy record</td>
+				</tr>
+				<tr>
+					<td>Deploy.start</td>
+					<td>Start time of the event</td>
+				</tr>
+				<tr>
+					<td>Deploy.end</td>
+					<td>End time of the event</td>
+				</tr>
+				<tr>
+					<td>Deploy.version</td>
+					<td>Version of the application</td>
+				</tr>
+				<tr>
+					<td>Deploy.success</td>
+					<td>Success or failure. Set to 1 for success, blank for
+						failure and do not set for unknown</td>
+				</tr>
+				<tr>
+					<td>Environment.name</td>
+					<td>Name of the environment that the candiate has been
+						deployed to</td>
+				</tr>
+
+			</table>
+
+			</p>
+
+		</section>
+		<section id="webinterface">
+			<div class="page-header">
+				<h1>The Web Interface</h1>
+			</div>
+
+			<h3></h3>
+
+			<h4>The Pipeline View</h4>
+			<p>
+				The <a href="{% url 'pipeline' %}">pipeline view</a> shows a
+				graphical representation of the latest builds for a given product.
+				Once a product is selected, the view updates regularly to keep the
+				view relivant.
+			</p>
+
+			<h4>Candidate Information</h4>
+			<p>
+				The <a href="{% url 'candidate' %}">candidate</a> page shows
+				detailed information about a particular version of a product,
+				including build, test and deployment inforamation. Of course, the
+				data is only as good as that added throught the API, so it's worth
+				making sure you add as much detail as you are likely to need through
+				the API.
+			</p>
+
+		</section>
+		<section id="testingapp">
+			<div class="page-header">
+				<h1>Testing the Application</h1>
+			</div>
+
+			<p>If you're after a quick demo of how it hangs together, you can
+				run &quot;python manage.py dummyrun&quot;. This will run some code
+				to mimick the behaviour of a pipeline.</p>
+			<p>It assumes that you're running the application on
+				http://localhost:8000/dash, just as if you had started the
+				application locally. While the test is running you can navigate to
+				the pipeline view on that instance and see the pipelines being run
+				by selecting the &quot;test product&quot;.</p>
+			<p>The code for dummyrun exists in visibilty/dash/tests/dummy.py.
+				Reading through this code provides a useful hint on how the API can
+				be used.</p>
+		</section>
+
+	</div>
+</div>
+{% endblock main %}
+

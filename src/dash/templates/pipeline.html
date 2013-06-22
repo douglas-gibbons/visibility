@@ -1,0 +1,59 @@
+{% extends "base.html" %} {% load staticfiles %} 
+{% block title %}
+	<title>Visibility: Pipeline View</title>
+{% endblock title %}
+{% block extra_javascript %}
+	<script>
+	
+		function getPipes() {
+			
+			$.get(
+				'{% url 'pipeline_chart' %}', 
+				{ product : '{{ product.name }}', numpipes: '{{ numpipes }}'  }
+			).done(function(data) { 
+				$('#pipes').html(data);
+			});
+			
+		}
+		
+		$(document).ready(function() {
+			getPipes()
+			setInterval(function(){ getPipes(); }, 1000);
+		});
+	
+	</script>
+{% endblock extra_javascript %}
+{% block extra_style %}
+	<style>
+	</style>
+{% endblock extra_style %}
+{% block main %}
+<p>
+<form method="GET" class="form-inline">
+	Show me 
+	
+	<select name="numpipes"> 
+		{% for num in loop_times %}
+			<option value='{{ num }}' {% if num == numpipes %}selected{% endif %}>{{ num }}</option> 
+		{% endfor %}
+	</select> most recent candidates of the 
+	
+	<select name="product">
+		{% for p in products %}
+			<option value='{{ p.name }}' {% if p == product %}selected{% endif %} >{{ p.name }}</option> 
+		{% endfor %}
+	</select> product.
+
+	<!--  Use a form submit rather than Ajax so user can store page as bookmark -->
+	<button type="submit" class="btn">
+		<i class="icon-search"></i>
+	</button>
+
+</form>
+</p>
+
+
+<div id='pipes'></div>
+
+{% endblock main %}
+

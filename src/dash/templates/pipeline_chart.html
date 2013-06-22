@@ -1,0 +1,28 @@
+{% load staticfiles %} {% if pipes %}
+
+<table border=0px cellpadding=0px cellspacing=0px>
+
+	{% for pipe in pipes %}
+		<tr>
+			<th colspan=2>
+			<a href='{% url 'candidate' %}?product={{pipe.product.name|urlencode }}&version={{pipe.version|urlencode }}' >{{ pipe.version }}</a>
+			</th>
+		</tr>
+
+		{% for event in pipe.events %}
+		<tr>
+			<td width=100px>{{ event.getParentType }}</td>
+			<td>
+				<img src="{% static 'img/cleardot.png' %}" style='height: 20px; width: {{ event.startPos }}px' /> 
+				<img src="{% static 'img/'|add:event.img %}" style='height: 20px; width: {{ event.endPos }}px' />
+			</td>
+		</tr>
+		{% endfor %}
+
+	{% endfor %}
+
+</table>
+{% endif %}
+
+
+

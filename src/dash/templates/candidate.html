@@ -1,0 +1,134 @@
+{% extends "base.html" %} {% load staticfiles %} {% block title %}
+<title>Visibility: Candidate Information</title>
+{% endblock title %} {% block extra_javascript %}
+<script>
+	
+	var selectedProduct = '{{ selectedProduct }}'
+	var selectedVersion = '{{ selectedVersion }}'
+	
+	// Fill in versions select
+	function setVersions(onLoad) {
+		$.getJSON(
+			'{% url 'product_versions' %}', 
+			{ product : $("#product option:selected").val()  }
+		).done(function(data) {
+			$('#version').empty();
+			$.each(data, function(index,value) {
+			    $('#version').append('<option value="'+ value + '" >' + value + '</option>');
+			    // If this is on page load set selected option
+			    if (onLoad) {
+			    	$("#version option[value='"+selectedVersion+"']").attr("selected","selected");
+			    }
+			});
+		});
+	}
+	
+	$(document).ready(function() {
+		// register changes on product select
+		$('#product').change(function() { setVersions(); });
+		
+		// Set current selected product	
+		$("#product option[value='"+selectedProduct+"']").attr("selected","selected");
+	
+		// set versions in select based on initial product section
+		setVersions(true)
+		
+	});
+</script>
+{% endblock extra_javascript %} 
+{% block extra_style %}
+	<style>
+	</style>
+{% endblock extra_style %} 
+{% block main %}
+<p>
+<form method="GET" class="form-inline">
+	<select name="product" id="product"> {% for p in products %}
+		<option value='{{ p.name }}' {% if p == product %}selected{% endif %} >{{p.name }}</option> {% endfor %}
+	</select> <select name="version" id='version'></select>
+
+	<button type="submit" class="btn">View</button>
+</form>
+</p>
+
+{% if events %}
+	<p>
+	{% for e in events %}
+		{% if e.getParentType == 'Build' and e.success != False %}
+			<table>
+				<tr>
+					<td>Product:</td>
+					<td><b>{{ e.product.name }}</b></td>
+				</tr>
+				<tr>
+					<td>Version:</td>
+					<td><b>{{ e.version }}</b></td>
+				</tr>
+			
+				<tr>
+					<td>VCS Location:</td>
+					<td>{{ e.build.vcs_location|urlize }}</td>
+				</tr>
+				<tr>
+					<td>Revision:</td>
+					<td>{{ e.build.revision }}</td>
+				</tr>
+				<tr>
+					<td>Builder:</td>
+					<td>{{ e.build.builder|urlize }}</td>
+				</tr>
+			</table>
+		
+		{% endif %}
+	{% endfor %}
+	
+	</p>
+	<p>&nbsp;</p>
+	
+	<table class='table'>
+		<tr>
+			<th>Type</th>
+			<th>Environment</th>
+			<th>Start</th>
+			<th>End</th>
+			<th>Duration</th>
+			<th>Success</th>
+		</tr>
+		{% for e in events %}
+		<tr
+			class="{% if e.success %}success{% elif e.success != None %}error{% elif e.success == None %}info{% endif %}">
+			{% if e.getParentType == 'Build' %}
+				<td>Build</td>
+				<td></td> 
+			{% elif e.getParentType == 'Testrun' %}
+				<td>Test Run {% if e.testrun.testpack %} ( {{ e.testrun.testpack.name }} ) {% endif %}</td>
+			
+				<td>{{ e.testrun.environment.name }}</td> 
+			{% elif e.getParentType == 'Deploy' %}
+				<td>Deployment</td>
+				<td>{{ e.deploy.environment.name }}</td> 
+			{% else %}
+				<td>Unknown</td>
+				<td></td> 
+			{% endif %}
+			
+			<td>{{ e.start|date:'d M Y H:i:s' }}</td>
+			<td>{{ e.end|date:'d M Y H:i:s' }}</td>
+			<td>{{ e.duration }}</td>
+			<td>
+				{% if e.success %} 
+					<font color=GREEN>Yes</font> 
+				{% elif	e.success != None %} 
+					<font color=RED>No</font> 
+				{% elif e.success == None %} 
+					Unknown 
+				{% endif %}
+			</td>
+		</tr>
+		{% endfor %}
+	</table>
+	
+{% endif %} 
+
+{% endblock main %}
+

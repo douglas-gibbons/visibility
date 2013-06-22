@@ -1,0 +1,20 @@
+{% extends "base.html" %} {% load staticfiles %} {% block title %}
+<title>Home</title>
+{% endblock title %} {% block extra_javascript %}
+<script>
+	</script>
+{% endblock extra_javascript %} {% block extra_style %}
+<style>
+</style>
+{% endblock extra_style %} {% block main %}
+<h1>Visibility Dashboard</h1>
+<p>The Visibility dashboard is designed to provide a web interface
+	for continuous delivery workflows. This allows you to track builds,
+	tests and deployments, so that you can easily see which build passed
+	which tests, and from where the code came from to create this build.</p>
+<p>
+	The <a href="{% url 'help' %}">help page</a> will help you get started.
+</p>
+
+{% endblock main %}
+
