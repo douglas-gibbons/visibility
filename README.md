@@ -27,7 +27,7 @@ as a standard Django project (hopefully) with no "clever" surprises.
 
 ##Prerequisite
 
-* Python (tested with 2.7) and Django 1.4
+* Python (tested with 2.7) and Django 1.5
 * git (so you can quickly download the code)
 
 ##Basic setup
