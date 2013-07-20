@@ -49,6 +49,9 @@ You should be able to see it working from [your local instance](http://localhost
 This starts the `run` function from a new instance of `Dummy` found in `src/dash/tests/dummy.py`.  All this class does
 is make a few calls to the API in real time so you can see how it might look with your own CD pipeline.
 
+Running `python manage.py` causes Django to only listen on the default IP address; 127.0.0.1 which is not accessible from
+other machines on your network. Optionally you could run `python manage.py 0.0.0.0:8000` to rectify this. For production
+it is strongly recommended that a different web server such Apache is used.
 
 Once you've had a play, you might want to:
 * Start using the API (check the [docs](http://localhost:8000/dash/help#api) on your local instance).
