@@ -1,0 +1,37 @@
+{% extends "base.html" %} {% load staticfiles %} 
+{% block title %}
+	<title>Visibility: Pipeline View</title>
+{% endblock title %}
+{% block extra_javascript %}
+	<script>
+		
+	</script>
+{% endblock extra_javascript %}
+{% block extra_style %}
+	<style>
+	</style>
+{% endblock extra_style %}
+{% block main %}
+<p>
+<form method="GET" class="form-inline">
+	Show me 
+	
+	<select name="environment">
+		{% for env in environments %}
+			<option value='{{ env.name }}' {% if env == environment %}selected{% endif %} >{{ env.name }}</option> 
+		{% endfor %}
+	</select> environment.
+
+	<!--  Use a form submit rather than Ajax so user can store page as bookmark -->
+	<button type="submit" class="btn">
+		<i class="icon-search"></i>
+	</button>
+
+</form>
+</p>
+
+
+<div id='environment'></div>
+
+{% endblock main %}
+
