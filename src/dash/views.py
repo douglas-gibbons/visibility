@@ -149,17 +149,22 @@ def product_versions(request):
 
 """ Environment view """
 def environment(request):
-  products = Product.objects.all()
+  
   environments = Environment.objects.all()
   
   try:
     environment = Environment.objects.get(pk=request.REQUEST['environment'])
+    
+    # TODO:
+    # Need to filter deploys, selecting latest of each product type
+    deploys = Deploy.objects.filter(environment = environment)
   except KeyError:
     environment = False
+    deploys = False
     
   return render(
     request, 'environment.html',
-    {'products' : products, 'environments' : environments, 'environment': environment }
+    {'deploys' : deploys, 'environments' : environments, 'environment': environment }
   )
     
 def pipeline(request):

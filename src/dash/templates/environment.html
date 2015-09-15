@@ -30,8 +30,38 @@
 </form>
 </p>
 
+{% if deploys %}
+ 
+    <table class='table'>
+        <tr>
+            <th>Product</th>
+            <th>Deployment start</th>
+            <th>Deployment end</th>
+            <th>Version</th>
+            <th>Success</th>
+        </tr>
+        {% for e in deploys %}
+        <tr
+            class="{% if e.success %}success{% elif e.success != None %}error{% elif e.success == None %}info{% endif %}">
+            <td>{{ e.product.name }}</td>
+            <td>{{ e.start|date:'d M Y H:i:s' }}</td>
+            <td>{{ e.end|date:'d M Y H:i:s' }}</td>
+            <td>{{ e.version }}</td>
+            <td>
+                {% if e.success %} 
+                    <font color=GREEN>Yes</font> 
+                {% elif e.success != None %} 
+                    <font color=RED>No</font> 
+                {% elif e.success == None %} 
+                    Unknown 
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    
 
-<div id='environment'></div>
+{% endif %} 
 
 {% endblock main %}
 
