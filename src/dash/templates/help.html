@@ -266,8 +266,8 @@ curl -d "Build.id="$build_id"&Build.end=now&Build.success=" \
 			<h5>Deployments</h5>
 
 			<p>
-				Path to add a new deployment: /dash/new_deployment<br /> Path to
-				update a deployment: /dash/update_depoyment<br /> Both requests
+				Path to add a new deployment: /dash/new_deploy<br /> Path to
+				update a deployment: /dash/update_deploy<br /> Both requests
 				return the deployment record ID number.<br />
 			<table>
 				<caption>Deploy Fields</caption>
@@ -277,7 +277,7 @@ curl -d "Build.id="$build_id"&Build.end=now&Build.success=" \
 				</tr>
 				<tr>
 					<td>Deploy.id</td>
-					<td>ID number of the Deploy record</td>
+					<td>ID number of the Deploy record (for /dash/update_deploy)</td>
 				</tr>
 				<tr>
 					<td>Deploy.start</td>
@@ -301,7 +301,10 @@ curl -d "Build.id="$build_id"&Build.end=now&Build.success=" \
 					<td>Name of the environment that the candiate has been
 						deployed to</td>
 				</tr>
-
+                <tr>
+                    <td>Product.name</td>
+                    <td>Name of the product deployed</td>
+                </tr>
 			</table>
 
 			</p>

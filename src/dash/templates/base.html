@@ -58,9 +58,6 @@ html,body {
 <link href="{% static 'css/bootstrap-responsive.min.css' %}"
 	rel="stylesheet" />
 <link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet" />
-<!--[if IE 7]>
-		<link rel="stylesheet" href="{% static 'css/font-awesome-ie7.min.css' %}" />
-	<![endif]-->
 
 <script src="{% static 'js/bootstrap.min.js' %}"></script>
 <script src="{% static 'js/jquery-1.8.3.min.js' %}"></script>
@@ -92,8 +89,11 @@ html,body {
 							href="{% url 'candidate' %}"><i class="icon-list-alt"></i>
 								Candidate Information</a></li>
 						<li class="{% active request 'pipeline' %}"><a
-							href="{% url 'pipeline' %}"><i class="icon-tasks"></i>
+							href="{% url 'pipeline' %}"><i class="icon-reorder"></i>
 								Pipeline View</a></li>
+						<li class="{% active request 'environment' %}"><a
+                            href="{% url 'environment' %}"><i class="icon-beaker"></i>
+                                Environment Status</a></li>
 						<li class="{% active request 'help' %}"><a
 							href="{% url 'help' %}"><i class="icon-question-sign"></i>
 								Help</a></li>
@@ -118,7 +118,7 @@ html,body {
 	<div id="footer">
 		<div class="container">
 			<p class="muted credit">
-				&copy; 2013 <a href="http://www.zenly.co.uk/">Douglas Gibbons</a>.
+				&copy; 2013 - 2015 <a href="http://www.zenly.co.uk/">Douglas Gibbons</a>.
 				Licensed under the <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a>.
 			</p>
 		</div>

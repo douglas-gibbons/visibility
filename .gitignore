@@ -4,3 +4,4 @@
 # Ignore database files
 sqlite.db
 
+/src/visibility/sqlite.db-journal

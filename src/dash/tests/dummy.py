@@ -19,6 +19,7 @@ import httplib,urllib
 import datetime
 import random
 import time
+import threading
 
 ''' Pretends to be a whole pipeline; adding builds,deploys,testruns in real time'''
 
@@ -26,7 +27,6 @@ logger = logging.getLogger(__name__)
 
         
 class Dummy(BaseCommand):
-    productName = 'Example Pipeline';
     
     def nowString(self):
         '''Could just return the text "now" instead''' 
@@ -83,7 +83,7 @@ class Dummy(BaseCommand):
         }
         self.getUrl(url,dict)
     
-    def createDeploy(self,productName,version):
+    def createDeploy(self,productName,version,environment):
         ''' Deploy '''
         logger.debug('Deploying '+version)
         
@@ -91,7 +91,7 @@ class Dummy(BaseCommand):
         dict = {
          'Product.name' : productName,
          'Deploy.version' : version,
-         'Environment.name' : 'Testing',
+         'Environment.name' : environment,
          'Deploy.start' : self.nowString()
         }
         id = self.getUrl(url,dict)
@@ -135,10 +135,9 @@ class Dummy(BaseCommand):
         }
         id = self.getUrl(url,dict)
     
-    def run(self):
+    def delivery(self,productName):
         
-        
-        for i in range(100):
+        for i in range(30):
             
             success = 1
             version = '1.0-'+str(i)
@@ -146,24 +145,44 @@ class Dummy(BaseCommand):
             logger.debug('Building version '+version)
             
             '''Building'''
-            id = self.createBuild(self.productName,version)
+            id = self.createBuild(productName,version)
             self.sleepRandom()
             self.updateBuild(id,success)
             
             '''Deploying'''
-            id = self.createDeploy(self.productName,version)
+            id = self.createDeploy(productName,version,"Test")
             self.sleepRandom()
             self.updateDeploy(id,success)
             
             '''Testing'''
-            id = self.createTest(self.productName,version,success)
+            id = self.createTest(productName,version,success)
+            self.sleepRandom()
+    
             self.sleepRandom()
     
             '''Was the testing success? Lets add a random element'''
             if random.randrange(0, 3, 1) == 1:
-                success='' # failed
+                self.updateTest(id,'')
             else:
-                success = '1' # succeeded
+                self.updateTest(id,1)
+                '''Deploying'''
+                id = self.createDeploy(productName,version,"Staging")
+                self.sleepRandom()
+                self.updateDeploy(id,success)
+                self.sleepRandom()
+                id = self.createDeploy(productName,version,"Production")
+                self.sleepRandom()
+                self.updateDeploy(id,success)
                 
-            self.updateTest(id,success)
+            
 
+
+    def run(self):
+      
+      threads = []
+      for product in ['UI', 'API', 'DB', 'Reports', 'Security']:
+          # self.delivery(product)
+          t = threading.Thread(target=self.delivery, args=(product,))
+          threads.append(t)
+          t.start()
+      
