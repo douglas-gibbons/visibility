@@ -1,0 +1,9 @@
+Package: visibility
+Version: 0.1
+Section: devel
+Architecture: all
+Depends: python, python-django, python-flup, debconf, lighttpd
+Replaces: lighttpd
+Maintainer: Douglas Gibbons <doug@zenly.co.uk>
+Description: Continuous Delivery information board
+ Information board for software build, test and deployment pipelines

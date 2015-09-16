@@ -5,3 +5,8 @@
 sqlite.db
 
 /src/visibility/sqlite.db-journal
+
+# Debian packaging
+/packaging/*.deb
+/packaging/debian/usr/share/*
+
