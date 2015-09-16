@@ -46,7 +46,7 @@
             <td>{{ e.product.name }}</td>
             <td>{{ e.start|date:'d M Y H:i:s' }}</td>
             <td>{{ e.end|date:'d M Y H:i:s' }}</td>
-            <td>{{ e.version }}</td>
+            <td><a href='{% url 'candidate' %}?product={{e.product.name|urlencode }}&version={{e.version|urlencode }}' >{{ e.version }}</a></td>
             <td>
                 {% if e.success %} 
                     <font color=GREEN>Yes</font> 

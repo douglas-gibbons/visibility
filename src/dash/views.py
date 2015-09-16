@@ -22,6 +22,7 @@ from dash.models import Build,Product,Event,Testrun,Deploy,Testpack,Environment
 import json
 import datetime
 from django.views.decorators.csrf import csrf_exempt
+from django.db.models import Max
 
 logger = logging.getLogger(__name__)
 
@@ -155,9 +156,14 @@ def environment(request):
   try:
     environment = Environment.objects.get(pk=request.REQUEST['environment'])
     
-    # TODO:
-    # Need to filter deploys, selecting latest of each product type
-    deploys = Deploy.objects.filter(environment = environment)
+    # Filter of deploys, selecting latest of each product type for the environment
+    ids = (
+      Deploy.objects.filter(environment = environment)
+      .values('product')
+      .annotate(max_id=Max('id'))
+      .values_list('max_id',flat=True)
+    )
+    deploys = Deploy.objects.filter(pk__in=ids)
   except KeyError:
     environment = False
     deploys = False
