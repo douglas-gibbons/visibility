@@ -12,7 +12,7 @@ DJANGO_SITE="visibility"
 SITE_PATH=/usr/share/
 RUNFILES_PATH=$SITES_PATH/tmp
 HOST=127.0.0.1
-PORT_START=3033
+PORT=3033
 RUN_AS=www-data
 
 set -e
@@ -36,6 +36,7 @@ d_start()
            --pidfile $RUNFILES_PATH/$DJANGO_SITE.pid \
            --chuid $RUN_AS --exec /usr/bin/env -- python \
            $SITE_PATH/$DJANGO_SITE/manage.py runfcgi \
+           protocol=scgi method=prefork \
            host=$HOST port=$PORT \
            pidfile=$RUNFILES_PATH/$DJANGO_SITE.pid
     fi

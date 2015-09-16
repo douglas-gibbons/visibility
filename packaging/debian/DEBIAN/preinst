@@ -3,5 +3,5 @@ set -e
 # stop django server
 if [ -f /etc/init.d/visibility ]
 then
-  invoke-rc.d django stop
+  invoke-rc.d visibility stop
 fi
