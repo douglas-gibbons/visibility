@@ -3,7 +3,7 @@
 cd $(dirname $0)
 
 # Cleanup
-rm -r debian/usr/share/*
+rm -rf debian/usr/share/*
 
 # App
 mkdir -p debian/usr/share/visibility

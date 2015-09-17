@@ -12,10 +12,7 @@ if [ "$1" = "remove" ]; then
  
 # Source debconf library.
 . /usr/share/debconf/confmodule
- 
-# remove Django start script
-update-rc.d -f django remove
- 
+  
 # Remove my changes to the db.
 db_purge
 fi

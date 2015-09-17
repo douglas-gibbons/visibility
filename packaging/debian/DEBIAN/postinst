@@ -2,7 +2,19 @@
 set -e
 # Source debconf library.
 . /usr/share/debconf/confmodule
-update-rc.d visibility defaults 90 >/dev/null
-# start visibility
-invoke-rc.d visibility start
+
+# Application setup
+python /usr/share/visibility/manage.py collectstatic --noinput --verbosity=0
+[ -f /usr/share/visibility/visibility/sqlite.db ] ||
+  python /usr/share/visibility/manage.py syncdb --noinput --verbosity=0
+
+# Apache config
+rm -f /etc/apache2/sites-enabled/000-default.conf
+[ -f /etc/apache2/sites-enabled/visibility.conf ] ||
+  ln -s /etc/apache2/sites-available/visibility.conf /etc/apache2/sites-enabled/visibility.conf
+a2enmod wsgi
+service apache2 restart
+
 db_stop
+
+
