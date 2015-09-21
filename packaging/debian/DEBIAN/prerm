@@ -1,3 +1,8 @@
 #!/bin/bash
 set -e
 
+# Clean up .pyc files
+find /usr/share/visibility -name '*.pyc' -delete
+
+# Clean up static files
+rm -R /usr/share/visibility/static/
