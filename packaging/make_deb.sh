@@ -25,4 +25,4 @@ version=$(dpkg-deb --info debian.deb  | grep Version: | cut -d ' ' -f 3)
 deb_file=visibility_${version}_all.deb
 mv debian.deb $deb_file
 lintian $deb_file
-dpkg-deb --info deb_file
+dpkg-deb --info $deb_file
