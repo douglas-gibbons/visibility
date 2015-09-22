@@ -7,6 +7,9 @@ set -e
 python /usr/share/visibility/manage.py collectstatic --noinput --verbosity=0
 [ -f /usr/share/visibility/visibility/sqlite.db ] ||
   python /usr/share/visibility/manage.py syncdb --noinput --verbosity=0
+  
+# Ownership set to Apache user
+chown -R www-data:www-data /usr/share/visibility
 
 # Apache config
 rm -f /etc/apache2/sites-enabled/000-default.conf
@@ -16,5 +19,4 @@ a2enmod wsgi
 service apache2 restart
 
 db_stop
-
 
