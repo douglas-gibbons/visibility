@@ -20,6 +20,7 @@ import datetime
 import random
 import time
 import threading
+from boto.dynamodb.condition import NULL
 
 ''' Pretends to be a whole pipeline; adding builds,deploys,testruns in real time'''
 
@@ -83,7 +84,7 @@ class Dummy(BaseCommand):
         }
         self.getUrl(url,dict)
     
-    def createDeploy(self,productName,version,environment):
+    def createDeploy(self,productName,version,environment,hostname=False):
         ''' Deploy '''
         logger.debug('Deploying '+version)
         
@@ -94,6 +95,9 @@ class Dummy(BaseCommand):
          'Environment.name' : environment,
          'Deploy.start' : self.nowString()
         }
+        if hostname:
+            dict.update({'Host.name' : hostname})
+            
         id = self.getUrl(url,dict)
         return id
     
@@ -118,7 +122,7 @@ class Dummy(BaseCommand):
             'Product.name' : productName,
             'Testpack.name' : 'Sanity',
             'Testrun.version' : version,
-            'Environment.name' : 'Testing',
+            'Environment.name' : 'Test',
             'Testrun.success' : success,
             'Testrun.start' : self.nowString()
         }
@@ -150,7 +154,11 @@ class Dummy(BaseCommand):
             self.updateBuild(id,success)
             
             '''Deploying'''
-            id = self.createDeploy(productName,version,"Test")
+            id = self.createDeploy(productName,version,"Test","testhost1")
+            self.sleepRandom()
+            self.updateDeploy(id,success)
+            
+            id = self.createDeploy(productName,version,"Test","testhost2")
             self.sleepRandom()
             self.updateDeploy(id,success)
             
@@ -165,12 +173,17 @@ class Dummy(BaseCommand):
                 self.updateTest(id,'')
             else:
                 self.updateTest(id,1)
-                '''Deploying'''
+                '''Deploying - staging. Note: No hostname given. Should be ok'''
                 id = self.createDeploy(productName,version,"Staging")
                 self.sleepRandom()
                 self.updateDeploy(id,success)
                 self.sleepRandom()
-                id = self.createDeploy(productName,version,"Production")
+                
+                '''Deploying - production'''
+                id = self.createDeploy(productName,version,"Production","testprod1")
+                self.sleepRandom()
+                self.updateDeploy(id,success)
+                id = self.createDeploy(productName,version,"Production","testprod2")
                 self.sleepRandom()
                 self.updateDeploy(id,success)
                 

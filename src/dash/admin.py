@@ -22,6 +22,6 @@ admin.site.register(Build)
 admin.site.register(Deploy)
 admin.site.register(Event)
 admin.site.register(Environment)
+admin.site.register(Host)
 admin.site.register(Testrun)
 admin.site.register(Testpack)
-

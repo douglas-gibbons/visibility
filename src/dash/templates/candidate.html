@@ -45,9 +45,9 @@
 <form method="GET" class="form-inline">
 	<select name="product" id="product"> {% for p in products %}
 		<option value='{{ p.name }}' {% if p == product %}selected{% endif %} >{{p.name }}</option> {% endfor %}
-	</select> <select name="version" id='version'></select>
-
-	<button type="submit" class="btn">View</button>
+	</select> 
+	<select name="version" id='version'></select>
+	<button type="submit" class="btn btn-default">View</button>
 </form>
 </p>
 
@@ -85,10 +85,14 @@
 	</p>
 	<p>&nbsp;</p>
 	
+<div class="panel panel-default">
+	<div class="panel-heading">Candidate information for {{ selectedProduct }} {{ selectedVersion }}</div>
+	
 	<table class='table'>
 		<tr>
 			<th>Type</th>
 			<th>Environment</th>
+			<th>Host</th>
 			<th>Start</th>
 			<th>End</th>
 			<th>Duration</th>
@@ -96,20 +100,24 @@
 		</tr>
 		{% for e in events %}
 		<tr
-			class="{% if e.success %}success{% elif e.success != None %}error{% elif e.success == None %}info{% endif %}">
+			class="{% if e.success %}success{% elif e.success != None %}danger{% elif e.success == None %}info{% endif %}">
 			{% if e.getParentType == 'Build' %}
 				<td>Build</td>
-				<td></td> 
+				<td></td>
+				<td></td>
 			{% elif e.getParentType == 'Testrun' %}
 				<td>Test Run {% if e.testrun.testpack %} ( {{ e.testrun.testpack.name }} ) {% endif %}</td>
 			
-				<td>{{ e.testrun.environment.name }}</td> 
+				<td><a href='{% url 'environment' %}?environment={{ e.testrun.environment.name|urlencode }}' >{{ e.testrun.environment.name }}</a></td>
+				<td></td>
 			{% elif e.getParentType == 'Deploy' %}
 				<td>Deployment</td>
-				<td>{{ e.deploy.environment.name }}</td> 
+				<td><a href='{% url 'environment' %}?environment={{ e.deploy.environment.name|urlencode }}' >{{ e.deploy.environment.name }}</a></td>
+				<td><a href='{% url 'host' %}?host={{ e.deploy.host.name|urlencode }}' >{{ e.deploy.host.name }}</a></td>
 			{% else %}
 				<td>Unknown</td>
-				<td></td> 
+				<td></td>
+				<td></td>
 			{% endif %}
 			
 			<td>{{ e.start|date:'d M Y H:i:s' }}</td>
@@ -127,7 +135,8 @@
 		</tr>
 		{% endfor %}
 	</table>
-	
+</div>
+
 {% endif %} 
 
 {% endblock main %}
