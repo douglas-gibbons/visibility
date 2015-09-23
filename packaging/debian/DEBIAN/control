@@ -1,5 +1,5 @@
 Package: visibility
-Version: 0.3
+Version: 0.4
 Section: devel
 Architecture: all
 Depends: python, python-django, python-flup, debconf, apache2, libapache2-mod-wsgi

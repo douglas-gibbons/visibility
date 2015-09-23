@@ -18,7 +18,7 @@ from django.shortcuts import render,redirect
 import dash.forms
 from dash.services import requestToObjects,findObject,updateObject
 import logging
-from dash.models import Build,Product,Event,Testrun,Deploy,Testpack,Environment
+from dash.models import Build,Product,Event,Testrun,Deploy,Testpack,Environment,Host
 import json
 import datetime
 from django.views.decorators.csrf import csrf_exempt
@@ -99,9 +99,13 @@ def new_deploy(request):
     environment = findObject(objects,dash.models.Environment)
     environment.save()
     
+    host = findObject(objects,dash.models.Host)
+    host.save()
+    
     deploy = findObject(objects,dash.models.Deploy)
     deploy.product = product
     deploy.environment = environment
+    deploy.host = host
     
     deploy.save()
     
@@ -148,6 +152,31 @@ def product_versions(request):
     json.dumps(list(versions.values_list('version',flat=True) ))
   )
 
+""" Host view """
+def host(request):
+  
+  hosts = Host.objects.all()
+  
+  try:
+    host = Host.objects.get(pk=request.REQUEST['host'])
+    
+    # Filter of deploys, selecting latest of each product type for the environment
+    ids = (
+      Deploy.objects.filter(host = host)
+      .values('product')
+      .annotate(max_id=Max('id'))
+      .values_list('max_id',flat=True)
+    )
+    deploys = Deploy.objects.filter(pk__in=ids)
+  except KeyError:
+    host = False
+    deploys = False
+    
+  return render(
+    request, 'host.html',
+    {'deploys' : deploys, 'hosts' : hosts, 'host': host }
+  )
+
 """ Environment view """
 def environment(request):
   
@@ -159,11 +188,11 @@ def environment(request):
     # Filter of deploys, selecting latest of each product type for the environment
     ids = (
       Deploy.objects.filter(environment = environment)
-      .values('product')
+      .values('product','host')
       .annotate(max_id=Max('id'))
       .values_list('max_id',flat=True)
     )
-    deploys = Deploy.objects.filter(pk__in=ids)
+    deploys = Deploy.objects.filter(pk__in=ids).order_by('product','host')
   except KeyError:
     environment = False
     deploys = False
@@ -172,7 +201,7 @@ def environment(request):
     request, 'environment.html',
     {'deploys' : deploys, 'environments' : environments, 'environment': environment }
   )
-    
+  
 def pipeline(request):
   
   products = Product.objects.all()

@@ -1,6 +1,6 @@
 {% extends "base.html" %} {% load staticfiles %} 
 {% block title %}
-	<title>Visibility: Environment Status</title>
+	<title>Visibility: Host Status</title>
 {% endblock title %}
 {% block extra_javascript %}
 	<script>
@@ -14,18 +14,17 @@
 {% block main %}
 <p>
 <form method="GET" class="form-inline">
-	Show me the
-	
-	<select name="environment">
-		{% for env in environments %}
-			<option value='{{ env.name }}' {% if env == environment %}selected{% endif %} >{{ env.name }}</option> 
+	Show me host
+	<select name="host">
+		{% for h in hosts %}
+			<option value='{{ h.name }}' {% if h == host %}selected{% endif %} >{{ h.name }}</option> 
 		{% endfor %}
-	</select> environment.
+	</select>
 
 	<!--  Use a form submit rather than Ajax so user can store page as bookmark -->
-    <button type="submit" class="btn btn-default">
-        <i class="glyphicon glyphicon-search"></i>
-    </button>
+	<button type="submit" class="btn btn-default">
+		<i class="glyphicon glyphicon-search"></i>
+	</button>
 
 </form>
 </p>
@@ -33,12 +32,12 @@
 {% if deploys %}
  
 <div class="panel panel-default">
-    <div class="panel-heading">{{ environment.name }} environment</div>
+    <div class="panel-heading">{{ host.name }} host</div>
     
     <table class='table'>
         <tr>
+            <th>Environment</th>
             <th>Product</th>
-            <th>Host</th>
             <th>Deployment start</th>
             <th>Deployment end</th>
             <th>Version</th>
@@ -47,8 +46,8 @@
         {% for e in deploys %}
         <tr
             class="{% if e.success %}success{% elif e.success != None %}danger{% elif e.success == None %}info{% endif %}">
+            <td><a href='{% url 'environment' %}?environment={{ e.environment.name|urlencode }}' >{{ e.environment.name }}</a></td>
             <td>{{ e.product.name }}</td>
-            <td><a href='{% url 'host' %}?host={{e.host.name|urlencode }}' >{{ e.host.name }}</a></td>
             <td>{{ e.start|date:'d M Y H:i:s' }}</td>
             <td>{{ e.end|date:'d M Y H:i:s' }}</td>
             <td><a href='{% url 'candidate' %}?product={{e.product.name|urlencode }}&version={{e.version|urlencode }}' >{{ e.version }}</a></td>

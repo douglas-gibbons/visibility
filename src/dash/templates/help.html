@@ -301,6 +301,11 @@ curl -d "Build.id="$build_id"&Build.end=now&Build.success=" \
 					<td>Name of the environment that the candiate has been
 						deployed to</td>
 				</tr>
+				<tr>
+                    <td>Host.name</td>
+                    <td>Name of the host that the candiate has been
+                        deployed to</td>
+                </tr>
                 <tr>
                     <td>Product.name</td>
                     <td>Name of the product deployed</td>
@@ -309,6 +314,14 @@ curl -d "Build.id="$build_id"&Build.end=now&Build.success=" \
 
 			</p>
 
+            <h6>Examples</h6>
+            <p>Here is an example deploy. We don't know the truee start time, but can
+            set the start and end time to just be &quot;now&quot; if we want.
+            </p>
+<pre>
+curl -d "Deploy.start=now&Deploy.end=now&Deploy.success=1&Deploy.version=0.1.1&Product.name=Test Product&Environment.name=Test&Host.name=testhost1" \
+ "http://localhost:8000/dash/new_deploy"
+</pre>
 		</section>
 		<section id="webinterface">
 			<div class="page-header">

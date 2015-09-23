@@ -22,6 +22,9 @@ logger = logging.getLogger(__name__)
 class Product(models.Model):
     name = models.CharField(max_length = 128, primary_key = True)
 
+class Host(models.Model):
+    name = models.CharField(max_length = 128, primary_key = True)
+    
 class Environment(models.Model):
     name = models.CharField(max_length = 128, primary_key = True)
 
@@ -74,3 +77,4 @@ class Testrun(Event):
 ''' Deployment to an environment '''
 class Deploy(Event):
     environment = models.ForeignKey(Environment,null=True)
+    host = models.ForeignKey(Host,null=True)

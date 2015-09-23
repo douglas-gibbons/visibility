@@ -32,6 +32,7 @@ urlpatterns = patterns('',
     url(r'^pipeline_chart$', views.pipeline_chart, name='pipeline_chart'),  # Ajax request on pipeline_page
     url(r'^pipeline$', views.pipeline, name='pipeline'),
     url(r'^environment$', views.environment, name='environment'),
+    url(r'^host$', views.host, name='host'),
 
     url(r'^candidate$', views.candidate, name='candidate'),
     url(r'^product_versions$', views.product_versions, name='product_versions'), # Ajax request on pipeline_page
