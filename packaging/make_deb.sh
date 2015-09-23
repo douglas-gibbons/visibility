@@ -9,6 +9,9 @@ rm -rf debian/usr/share/*
 mkdir -p debian/usr/share/visibility
 cp -R ../src/* debian/usr/share/visibility
 
+# Remove any existing test DB 
+rm-f debian/usr/share/visibility/visibility/sqlite.db
+
 # Clean up .pyc files
 find debian/usr/share/visibility/ -name *.pyc -exec rm {} \;
 
