@@ -14,17 +14,24 @@
 {% block main %}
 <p>
 <form method="GET" class="form-inline">
-	Show me host
-	<select name="host">
-		{% for h in hosts %}
-			<option value='{{ h.name }}' {% if h == host %}selected{% endif %} >{{ h.name }}</option> 
-		{% endfor %}
-	</select>
 
-	<!--  Use a form submit rather than Ajax so user can store page as bookmark -->
-	<button type="submit" class="btn btn-default">
-		<i class="glyphicon glyphicon-search"></i>
-	</button>
+<div class="row">
+  <div class="col-lg-6">
+    <div class="input-group">
+        <select name="host" class="form-control" >
+        {% for h in hosts %}
+            <option value='{{ h.name }}' {% if h == host %}selected{% endif %} >{{ h.name }}</option> 
+        {% endfor %}
+    </select>
+      <span class="input-group-btn">
+            <button type="submit" class="btn btn-default">
+        <i class="glyphicon glyphicon-search"></i>
+    </button>
+      </span>
+    </div><!-- /input-group -->
+  </div><!-- /.col-lg-6 -->
+</div><!-- /.row -->
+
 
 </form>
 </p>

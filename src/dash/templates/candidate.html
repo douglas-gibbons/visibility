@@ -43,11 +43,26 @@
 {% block main %}
 <p>
 <form method="GET" class="form-inline">
-	<select name="product" id="product"> {% for p in products %}
-		<option value='{{ p.name }}' {% if p == product %}selected{% endif %} >{{p.name }}</option> {% endfor %}
-	</select> 
-	<select name="version" id='version'></select>
-	<button type="submit" class="btn btn-default">View</button>
+
+<div class="row">
+    <div class="col-lg-6">
+    <div class="input-group">
+    
+    
+    	<select name="product" class="form-control" id="product"> {% for p in products %}
+    		<option value='{{ p.name }}' {% if p == product %}selected{% endif %} >{{p.name }}</option> {% endfor %}
+    	</select> 
+    	
+    	<span class="input-group-btn">
+    	<select name="version" class="form-control" id='version'></select>
+    	</span>
+    	<span class="input-group-btn">
+    	<button type="submit" class="btn btn-default"><i class="glyphicon glyphicon-search"></i></button>
+    	</span>
+    </div>
+    </div>
+</div>
+
 </form>
 </p>
 

@@ -14,18 +14,24 @@
 {% block main %}
 <p>
 <form method="GET" class="form-inline">
-	Show me the
-	
-	<select name="environment">
-		{% for env in environments %}
-			<option value='{{ env.name }}' {% if env == environment %}selected{% endif %} >{{ env.name }}</option> 
-		{% endfor %}
-	</select> environment.
 
-	<!--  Use a form submit rather than Ajax so user can store page as bookmark -->
-    <button type="submit" class="btn btn-default">
+<div class="row">
+  <div class="col-lg-6">
+    <div class="input-group">
+
+       <select name="environment" class="form-control" >
+        {% for env in environments %}
+            <option value='{{ env.name }}' {% if env == environment %}selected{% endif %} >{{ env.name }}</option> 
+        {% endfor %}
+     </select>
+      <span class="input-group-btn">
+            <button type="submit" class="btn btn-default">
         <i class="glyphicon glyphicon-search"></i>
     </button>
+      </span>
+    </div><!-- /input-group -->
+  </div><!-- /.col-lg-6 -->
+</div><!-- /.row -->
 
 </form>
 </p>
