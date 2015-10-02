@@ -1,6 +1,5 @@
 visibility
 ==========
- 
 
 ##Background
 Software builds should be repeatable and transparent.  Often [Continuous Delivery](http://en.wikipedia.org/wiki/Continuous_delivery) workflows are 
@@ -59,6 +58,17 @@ Once you've had a play, you might want to:
 * Use [Apache with mod_wsgi](https://docs.djangoproject.com/en/1.5/howto/deployment/wsgi/modwsgi/)
 * Change the [database](https://docs.djangoproject.com/en/1.5/ref/databases/)
 * Fork the code and customise it!
+
+## Debian / Ubunutu Packaging
+
+Probably the quickest way to get started is to create and install the debian package.
+
+Clone the code and run packaging/make_deb.sh
+
+Deb packages can be instaled on the command line:
+
+    sudo apt-get install -y gdebi-core
+    gdebi <deb filename>
 
 
 ##License
