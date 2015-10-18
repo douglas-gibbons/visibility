@@ -58,12 +58,16 @@
 
 <p><b>Dates</b> are mostly added through the API using the &quot;now&quot;
 keyword (see examples below).  You can also use the format 
-&quot;YYYY-MM-DD HH:MM:SS[Timezone]&quot;. 
+&quot;YYYY-MM-DD HH:MM[:ss[.uuuuuu]][TZ]&quot;. 
+
 Here's an example of how to get the
-current date and time in the correct format using the GNU date command:
+current date and time in the correct format using the GNU date command. Note 
+that we return the date in the UTC timezone, and then specify 
+&quot;Zulu Time Zone&quot; as &quot;Z&quot; in the output format. This gets
+around those British Summer Time type  issues where hours go missing.
 
 <pre>
-date +'%Y-%m-%d %H:%M:%SZ'
+TZ=UTC date +'%Y-%m-%d %H:%M:%SZ'
 </pre>
 
 <h2>Builds</h2>

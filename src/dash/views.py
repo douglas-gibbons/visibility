@@ -23,6 +23,7 @@ import json
 import datetime
 from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Max
+from django.core import serializers
 
 logger = logging.getLogger(__name__)
 
@@ -226,7 +227,37 @@ def pipeline(request):
     {'products' : products, 'product' : product, 'loop_times' : loop_times, 'numpipes' : numpipes }
   )
 
-
+""" 
+  Removes old data up_to a certain date
+"""
+def cleanup(request):
+    
+    up_to =  request.REQUEST['up_to']
+    
+    Event.objects.filter(end__lt = up_to).delete()
+    Event.objects.filter(start__lt = up_to).filter(end__isnull = True).delete()
+    
+    # Clean up host, products, environment, testpack records
+    # where there is no longer an event
+    
+    Product.objects.exclude(
+        pk__in = Event.objects.values_list('product', flat=True)
+    ).delete()
+    Host.objects.exclude(
+        pk__in = Deploy.objects.values_list('host', flat=True)
+    ).delete()
+    Environment.objects.exclude(
+        pk__in = Testrun.objects.values_list('environment', flat=True)
+    ).delete()
+    Environment.objects.exclude(
+        pk__in = Deploy.objects.values_list('environment', flat=True)
+    ).delete()
+    Testpack.objects.exclude(
+        pk__in = Testrun.objects.values_list('environment', flat=True)
+    ).delete()
+    
+    return HttpResponse("OK", content_type="text/plain")
+    
 def pipeline_chart(request):
     
   pipes = False
@@ -251,8 +282,7 @@ def pipeline_chart(request):
       request, 'pipeline_chart.html',
       {'pipes' : pipes, 'product' : product, }
   )
-
-
+    
 def getPipes(product,numToReturn):
    
   '''Empty class to store data for one product/version'''
@@ -337,7 +367,5 @@ def getPipes(product,numToReturn):
           logger.debug('eventStartT: ' + str(eventStartT) + ' eventEndT: '+ str(eventEndT) + ' maxPipeDuration: ' + str(maxPipeDuration))
           logger.debug('pipeStartT: ' + str(pipeStartT) )
           
-          
-          
   return pipes
-    
+
