@@ -45,9 +45,9 @@
         <tr>
             <th>Environment</th>
             <th>Product</th>
+            <th>Version</th>
             <th>Deployment start</th>
             <th>Deployment end</th>
-            <th>Version</th>
             <th>Success</th>
         </tr>
         {% for e in deploys %}
@@ -55,9 +55,9 @@
             class="{% if e.success %}success{% elif e.success != None %}danger{% elif e.success == None %}info{% endif %}">
             <td><a href='{% url 'environment' %}?environment={{ e.environment.name|urlencode }}' >{{ e.environment.name }}</a></td>
             <td>{{ e.product.name }}</td>
+            <td><a href='{% url 'candidate' %}?product={{e.product.name|urlencode }}&version={{e.version|urlencode }}' >{{ e.version }}</a></td>
             <td>{{ e.start|date:'d M Y H:i:s' }}</td>
             <td>{{ e.end|date:'d M Y H:i:s' }}</td>
-            <td><a href='{% url 'candidate' %}?product={{e.product.name|urlencode }}&version={{e.version|urlencode }}' >{{ e.version }}</a></td>
             <td>
                 {% if e.success %} 
                     <font color=GREEN>Yes</font> 

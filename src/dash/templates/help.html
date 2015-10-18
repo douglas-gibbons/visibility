@@ -56,6 +56,16 @@
 	record the end of that event. The examples below show how to use the
 	API to record Builds, Deployments and Test Runs.</p>
 
+<p><b>Dates</b> are mostly added through the API using the &quot;now&quot;
+keyword (see examples below).  You can also use the format 
+&quot;YYYY-MM-DD HH:MM:SS[Timezone]&quot;. 
+Here's an example of how to get the
+current date and time in the correct format using the GNU date command:
+
+<pre>
+date +'%Y-%m-%d %H:%M:%SZ'
+</pre>
+
 <h2>Builds</h2>
 
 <p>
@@ -120,9 +130,13 @@
 	HH:MM:SS&quot;.
 </p>
 <pre>
-build_id=$( \
-curl -d "Product.name=Test Product&Build.version=1.0&Build.revision=12345&Build.start=now" \
-"http://localhost:8000/dash/new_build")
+build_id=$(
+  curl -d "Product.name=Test Product" \
+    -d "Build.version=1.0" \
+    -d "Build.revision=12345" \
+    -d "Build.start=now" \
+    "http://localhost:8000/dash/new_build"
+)
 		</pre>
 
 
@@ -131,8 +145,11 @@ curl -d "Product.name=Test Product&Build.version=1.0&Build.revision=12345&Build.
 </p>
 
 <pre>
-curl -d "Build.id="$build_id"&Build.end=now&Build.success=1" \
-"http://localhost:8000/dash/update_build"
+curl \
+  -d "Build.id=$build_id" \
+  -d "Build.end=now" \
+  -d "Build.success=1" \
+  "http://localhost:8000/dash/update_build"
 </pre>
 
 <p>Posting of data for a build failure. We just set success to
@@ -140,8 +157,11 @@ curl -d "Build.id="$build_id"&Build.end=now&Build.success=1" \
 </p>
 
 <pre>
-curl -d "Build.id="$build_id"&Build.end=now&Build.success=" \
-"http://localhost:8000/dash/update_build"
+curl \
+  -d "Build.id=$build_id" \
+  -d "Build.end=now" \
+  -d "Build.success=" \
+  "http://localhost:8888/dash/update_build"
 </pre>
 
 <h2>Test Runs</h2>
@@ -261,8 +281,15 @@ set the start and end time to just be &quot;now&quot; if we want.
 </p>
 
 <pre>
-curl -d "Deploy.start=now&Deploy.end=now&Deploy.success=1&Deploy.version=0.1.1&Product.name=Test Product&Environment.name=Test&Host.name=testhost1" \
-"http://localhost:8000/dash/new_deploy"
+curl \
+  -d "Deploy.start=now" \
+  -d "Deploy.end=now" \
+  -d "Deploy.success=1" \
+  -d "Deploy.version=0.1.1" \
+  -d "Product.name=Test Product" \
+  -d "Environment.name=Test" \
+  -d "Host.name=testhost1" \
+  "http://localhost:8000/dash/new_deploy"
 </pre>
 
 

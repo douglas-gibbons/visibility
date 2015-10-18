@@ -22,7 +22,7 @@ from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    url(r'^admin', include(admin.site.urls)),
+    url(r'^admin/', include(admin.site.urls)),
     url(r'^dash/', include('dash.urls')),
     url(r'', lambda x: HttpResponseRedirect('/dash/')),
 )

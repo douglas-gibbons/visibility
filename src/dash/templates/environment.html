@@ -43,21 +43,21 @@
     
     <table class='table'>
         <tr>
-            <th>Product</th>
             <th>Host</th>
+            <th>Product</th>
+            <th>Version</th>
             <th>Deployment start</th>
             <th>Deployment end</th>
-            <th>Version</th>
             <th>Success</th>
         </tr>
         {% for e in deploys %}
         <tr
             class="{% if e.success %}success{% elif e.success != None %}danger{% elif e.success == None %}info{% endif %}">
-            <td>{{ e.product.name }}</td>
             <td><a href='{% url 'host' %}?host={{e.host.name|urlencode }}' >{{ e.host.name }}</a></td>
+            <td>{{ e.product.name }}</td>
+            <td><a href='{% url 'candidate' %}?product={{e.product.name|urlencode }}&version={{e.version|urlencode }}' >{{ e.version }}</a></td>
             <td>{{ e.start|date:'d M Y H:i:s' }}</td>
             <td>{{ e.end|date:'d M Y H:i:s' }}</td>
-            <td><a href='{% url 'candidate' %}?product={{e.product.name|urlencode }}&version={{e.version|urlencode }}' >{{ e.version }}</a></td>
             <td>
                 {% if e.success %} 
                     <font color=GREEN>Yes</font> 
