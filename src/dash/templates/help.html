@@ -296,6 +296,28 @@ curl \
   "http://localhost:8000/dash/new_deploy"
 </pre>
 
+<h2>Removing Old Data</h2>
+
+<p>
+&quot;cleanup&quot; is a special request to remove data older than the given
+date. It will remove:
+</p>
+<ul>
+    <li>All events where the end date is older than the given date
+    <li>All events where the start date is older than the given date and the end
+    date is blank
+    <li>All host, products, environment, and testpacks that no longer have events
+</ul>
+<p>
+<p>
+Here's an example cleanup request, removing data before the 18th of October,
+2015 at 21:40:40 UTC
+</p>
+
+<pre>
+curl "http://localhost:8000/dash/cleanup?up_to=2015-10-18 21:40:40Z"
+</pre>
+
 
 <h1>Developers</h1>
 <p>
