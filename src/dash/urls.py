@@ -1,5 +1,5 @@
 '''
-   Copyright 2013 Douglas Gibons
+   Copyright 2013 Douglas Gibbons
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -14,7 +14,6 @@
    limitations under the License.
 '''
 from django.conf.urls import patterns, url
-
 from dash import views
 
 urlpatterns = patterns('',

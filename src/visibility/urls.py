@@ -1,5 +1,5 @@
 '''
-   Copyright 2013 Douglas Gibons
+   Copyright 2013 Douglas Gibbons
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -15,13 +15,14 @@
 '''
 from django.conf.urls import patterns, include, url
 from django.http import HttpResponseRedirect
+from django.shortcuts import redirect
 
-# Uncomment the next two lines to enable the admin:
+# Uncomment the next two lines to enable the admin site:
 from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    url(r'^$', lambda x: HttpResponseRedirect('/dash/')),
-    url(r'^admin/', include(admin.site.urls)),
+    url(r'^admin', include(admin.site.urls)),
     url(r'^dash/', include('dash.urls')),
+    url(r'', lambda x: HttpResponseRedirect('/dash/')),
 )
