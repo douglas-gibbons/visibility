@@ -246,14 +246,20 @@ def cleanup(request):
     Host.objects.exclude(
         pk__in = Deploy.objects.values_list('host', flat=True)
     ).delete()
+    
+    # Enironment IDs from Testrun and Deploy tables
+    environment_ids = (
+        list(Testrun.objects.values_list('environment', flat=True))
+    )
+    environment_ids.extend(
+        list(Deploy.objects.values_list('environment', flat=True))
+    )
     Environment.objects.exclude(
-        pk__in = Testrun.objects.values_list('environment', flat=True)
+        pk__in = environment_ids
     ).delete()
-    Environment.objects.exclude(
-        pk__in = Deploy.objects.values_list('environment', flat=True)
-    ).delete()
+    
     Testpack.objects.exclude(
-        pk__in = Testrun.objects.values_list('environment', flat=True)
+        pk__in = Testrun.objects.values_list('testpack', flat=True)
     ).delete()
     
     return HttpResponse("OK", content_type="text/plain")
