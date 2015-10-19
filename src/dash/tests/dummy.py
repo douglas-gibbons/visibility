@@ -110,7 +110,7 @@ class Dummy(BaseCommand):
         }
         id = self.getUrl(url,dict)
         
-    def createTest(self,productName,version,success):
+    def createTest(self,productName,version):
         '''Fail now and again'''
 
 
@@ -123,7 +123,6 @@ class Dummy(BaseCommand):
             'Testpack.name' : 'Sanity',
             'Testrun.version' : version,
             'Environment.name' : 'Test',
-            'Testrun.success' : success,
             'Testrun.start' : self.nowString()
         }
         id = self.getUrl(url,dict)     
@@ -163,7 +162,7 @@ class Dummy(BaseCommand):
             self.updateDeploy(id,success)
             
             '''Testing'''
-            id = self.createTest(productName,version,success)
+            id = self.createTest(productName,version)
             self.sleepRandom()
     
             self.sleepRandom()
