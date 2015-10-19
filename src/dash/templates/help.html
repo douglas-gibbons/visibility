@@ -130,8 +130,8 @@ TZ=UTC date +'%Y-%m-%d %H:%M:%SZ'
 <h3>Examples</h3>
 <p>Posting of data for the start of a build. Note the use of the
 	'now' keyword to specify a start date and time. Alternatively a date
-	and time can be added in the format of &quot;YYYY-MM-DD
-	HH:MM:SS&quot;.
+	and time can be added in the format of 
+	&quot;YYYY-MM-DD HH:MM[:ss[.uuuuuu]][TZ]&quot.
 </p>
 <pre>
 build_id=$(
@@ -206,7 +206,7 @@ curl \
 
 	<tr>
 		<td>Testrun.location</td>
-		<td>This can be a text description of the testing systme or a
+		<td>This can be a text description of the testing system or a
 			URL to the test, such as a Jenkins URL to the test job.</td>
 	</tr>
 
@@ -225,6 +225,33 @@ curl \
 	</tr>
 
 </table>
+
+
+<h3>Examples</h3>
+
+<p>Here is an example start of a test run, storing the ID into the $id shell
+variable:
+</p>
+<pre>
+id=$(
+  curl \
+    -d "Testrun.start=now" \
+    -d "Testrun.version=0.1186" \
+    -d "Testpack.name=Smoke test" \
+    -d "Product.name=Test Product" \
+    -d "Environment.name=Test" \
+    "http://localhost:8000/dash/new_testrun"
+)
+</pre>
+<p>Here's how we signal the end of that test run:</p>
+<pre>
+curl \
+  -d "Testrun.id=$id" \
+  -d "Testrun.end=now" \
+  -d "Testrun.success=1" \
+  "http://localhost:8000/dash/update_testrun"
+</pre>
+
 
 
 <h2>Deployments</h2>
