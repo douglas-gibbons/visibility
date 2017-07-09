@@ -13,7 +13,7 @@ Visibility is an application designed to provide clear workflow dashboards and o
 
 [![ScreenShot](https://raw.github.com/zenly/visibility/master/screenshots/Visibility_Youtube_Video.png)](https://www.youtube.com/watch?v=cDcs_wEg3Dw)
 
-##How does it do it
+## How does it do it
 
 Visibility is a [Django project](https://www.djangoproject.com/). It has an API to feed a database
 with build, deployment and test information from workflows.  This information can then be displayed on the web interface.
