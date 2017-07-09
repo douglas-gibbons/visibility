@@ -1,13 +1,13 @@
 visibility
 ==========
 
-##Background
+## Background
 Software builds should be repeatable and transparent.  Often [Continuous Delivery](http://en.wikipedia.org/wiki/Continuous_delivery) workflows are 
 built on top of tools such as Jenkins, which are great at task management, but less so at providing an overall view of workflows.  CI jobs may be
 cleared away after a time, leaving the user clueless as to what version of code build what version of product.
 
  
-##So, What is Visibility?
+## So, What is Visibility?
 
 Visibility is an application designed to provide clear workflow dashboards and offer traceable product delivery:
 
@@ -24,12 +24,12 @@ as a standard Django project (hopefully) with no "clever" surprises.
 
 
 
-##Prerequisite
+## Prerequisite
 
 * Python (tested with 2.7) and Django 1.5
 * git (so you can quickly download the code)
 
-##Basic setup
+## Basic setup
 
 * Grab the code with `git clone git://github.com/zenly/visibility.git`
 * Change into the `visibility/src` directory
@@ -71,6 +71,6 @@ Deb packages can be instaled on the command line:
     gdebi <deb filename>
 
 
-##License
+## License
 
 Licensed under the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0).
